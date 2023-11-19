@@ -91,20 +91,19 @@ loader = DataLoader(dataset=dataset,
                     num_workers=0)
 
 # Training loop:
-for i in range(epochs * len(loader)):
-    # Forward pass
-    dataiter = iter(loader)
-    X, y = next(dataiter)
-    y_pred = model(X).reshape(-1)
-    l = loss(y_pred, y)
-    # Backward pass
-    l.backward()
-    # Update parameters
-    optimizer.step()
-    # Zero gradients
-    optimizer.zero_grad()
-    if i % 100 == 0:
-        print(f'''i: {i}, loss: {l.item()}''')
+for i in range(epochs):
+    for j, (X, y) in enumerate(loader):    
+        # Forward pass
+        y_pred = model(X).reshape(-1)
+        l = loss(y_pred, y)
+        # Backward pass
+        l.backward()
+        # Update parameters
+        optimizer.step()
+        # Zero gradients
+        optimizer.zero_grad()
+        if i % 100 == 0:
+            print(f'''i: {i}, loss: {l.item()}''')
         
 # Test loop:
 X_test, y_test = load('mieszkania_test.csv')
